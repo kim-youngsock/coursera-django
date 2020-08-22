@@ -47,4 +47,4 @@ def vote(request, question_id):
 
 
 def owner(request):
-    return HttpResponse("Hello, world. 943b5fd1 is the polls owner.")
+    return HttpResponse("Hello, world. 1340ccf is the polls owner.")
