@@ -12,7 +12,6 @@ from autos.forms import MakeForm
 
 class MainView(LoginRequiredMixin, View):
     def get(self, request):
-
         makeCount = Make.objects.all().count();
         allAutos = Auto.objects.all();
 
@@ -29,65 +28,25 @@ class MakeView(LoginRequiredMixin, View):
 
 # We use reverse_lazy() because we are in "constructor attribute" code
 # that is run before urls.py is completely loaded
-class MakeCreate(LoginRequiredMixin, View):
-    template = 'autos/make_form.html'
+class MakeCreate(LoginRequiredMixin, CreateView):
+    model = Make
+    fields = '__all__'
     success_url = reverse_lazy('autos:all')
-
-    def get(self, request):
-        form = MakeForm()
-        ctx = {'form': form}
-        return render(request, self.template, ctx)
-
-    def post(self, request):
-        form = MakeForm(request.POST)
-        if not form.is_valid():
-            ctx = {'form': form}
-            return render(request, self.template, ctx)
-
-        make = form.save()
-        return redirect(self.success_url)
 
 
 # MakeUpdate has code to implement the get/post/validate/store flow
 # AutoUpdate (below) is doing the same thing with no code
 # and no form by extending UpdateView
-class MakeUpdate(LoginRequiredMixin, View):
+class MakeUpdate(LoginRequiredMixin, UpdateView):
     model = Make
+    fields = '__all__'
     success_url = reverse_lazy('autos:all')
-    template = 'autos/make_form.html'
-
-    def get(self, request, pk):
-        make = get_object_or_404(self.model, pk=pk)
-        form = MakeForm(instance=make)
-        ctx = {'form': form}
-        return render(request, self.template, ctx)
-
-    def post(self, request, pk):
-        make = get_object_or_404(self.model, pk=pk)
-        form = MakeForm(request.POST, instance=make)
-        if not form.is_valid():
-            ctx = {'form': form}
-            return render(request, self.template, ctx)
-
-        form.save()
-        return redirect(self.success_url)
 
 
-class MakeDelete(LoginRequiredMixin, View):
+class MakeDelete(LoginRequiredMixin, DeleteView):
     model = Make
+    fields = '__all__'
     success_url = reverse_lazy('autos:all')
-    template = 'autos/make_confirm_delete.html'
-
-    def get(self, request, pk):
-        make = get_object_or_404(self.model, pk=pk)
-        form = MakeForm(instance=make)
-        ctx = {'make': make}
-        return render(request, self.template, ctx)
-
-    def post(self, request, pk):
-        make = get_object_or_404(self.model, pk=pk)
-        make.delete()
-        return redirect(self.success_url)
 
 
 # Take the easy way out on the main table

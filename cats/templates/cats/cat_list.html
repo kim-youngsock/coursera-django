@@ -1,0 +1,30 @@
+{% extends "base_boostrap.html" %}
+
+{% block content %}
+  <h1>Cat List</h1>
+  {% if Cat_list %}
+  <ul>
+    {% for Cat in Cat_list %}
+      <li>
+          {{ Cat.nickname }} ({{ Cat.breed }})
+          (<a href="{% url 'cats:cat_update' Cat.id %}">Update</a> |
+          <a href="{% url 'cats:cat_delete' Cat.id %}">Delete</a>) <br/>
+          {{ Cat.comments }} ({{ Cat.mileage }} miles)
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no Cats in the library.</p>
+  {% endif %}
+  <p>
+    {% if breed_count > 0 %}
+      <a href="{% url 'cats:cat_create' %}">Add an Cat</a>
+    {% else %}
+      Please add a breed before you add an Cat.
+    {% endif %}
+  </p>
+  <p>
+  <a href="{% url 'cats:breed_list' %}">View breeds</a> ({{ breed_count }}) |
+    <a href="{% url 'cats:breed_create' %}">Add a breed</a>
+  </p>
+{% endblock %}
