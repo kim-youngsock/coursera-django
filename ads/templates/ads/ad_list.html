@@ -1,0 +1,23 @@
+{% extends "base_menu.html" %}
+
+{% block content %}
+  <h1>ad List</h1>
+  {% if ad_list %}
+  <ul>
+    {% for ad in ad_list %}
+      <li>
+          <a href="{% url 'ads:ad_detail' ad.id %}">{{ ad.title }}</a>
+          {% if ad.owner == user %} ({{ ad.price }})
+              (<a href="{% url 'ads:ad_update' ad.id %}">Update</a> |
+              <a href="{% url 'ads:ad_delete' ad.id %}">Delete</a>) <br/>
+          {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+    <p>There are no ads in the library.</p>
+  {% endif %}
+  <p>
+      <a href="{% url 'ads:ad_create' %}">Add a ad</a>
+  </p>
+{% endblock %}

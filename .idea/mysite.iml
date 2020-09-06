@@ -30,6 +30,7 @@
         <option value="$MODULE_DIR$/home/templates" />
         <option value="$MODULE_DIR$/hello/templates" />
         <option value="$MODULE_DIR$/autos/templates" />
+        <option value="$MODULE_DIR$/ads/templates" />
       </list>
     </option>
   </component>
