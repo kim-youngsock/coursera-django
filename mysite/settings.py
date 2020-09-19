@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'ads.apps.AdsConfig',
     'cats.apps.CatsConfig',
     'autos.apps.AutosConfig',
+    'unesco.apps.UnescoConfig',
 ]
 
 # When we get to crispy forms :)
