@@ -2,9 +2,10 @@
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic.base import View
 
 
-class OwnerListView(ListView):
+class OwnerListView(View):
     """
     Sub-class the ListView to pass the request to the form.
     """

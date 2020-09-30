@@ -1,3 +1,5 @@
+from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy, reverse
@@ -12,19 +14,26 @@ from .owner import *
 
 
 class AdListView(OwnerListView):
-    model = Ad
-    context_object_name = 'ad_list'
     template_name = 'ads/ad_list.html'
 
     def get(self, request):
-        ad_list = Ad.objects.all()
-        favorites = list()
+        strval = request.GET.get("search",False)
+        if strval:
+            query = Q(title__contains=strval)
+            query.add(Q(text__contains=strval), Q.OR)
+            ad_list = Ad.objects.filter(query).select_related().order_by('-updated_at')[:10]
+        else:
+            ad_list = Ad.objects.all().order_by('-updated_at')[:10]
 
+        for ad in ad_list:
+            ad.natural_updated = naturaltime(ad.updated_at)
+
+        favorites = list()
         if request.user.is_authenticated:
             rows = request.user.favorite_ads.values('id')
             favorites = [row['id'] for row in rows]
 
-        ctx = {'ad_list': ad_list, 'favorites': favorites}
+        ctx = {'ad_list': ad_list, 'favorites': favorites, 'search': strval}
         return render(request, self.template_name, ctx)
 
 
